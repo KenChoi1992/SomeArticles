@@ -1,6 +1,7 @@
-本文旨在指导React Native初学者如何使用React Native初步构建Android应用。在看本文之前，你应该具备了理解React Native的基本概念，
-以及搭建好了所需的环境（如果没有，参考官方网站）。接下来，我们一起来实现一个简单的PushDemoApp，借助jpush-android-sdk就可以实
-现推送功能。PushDemoApp的[源码](https://github.com/jpush/jpush-react-plugin)。我们先来看一下PushDemoApp最终的界面效果：
+本文旨在指导React Native初学者如何使用React Native初步构建Android应用。在看本文之前，你应该具备了理解React Native的基本概念，以及搭建好了所需的环境（如果没有，参考官方网站）。接下来，我们一起来实现一个简单的PushDemoApp，借助jpush-android-sdk就可以实
+现推送功能。**PushDemoApp的[源码](https://github.com/jpush/jpush-react-plugin)**。
+
+我们先来看一下PushDemoApp最终的界面效果：
 
 ![PushDemo](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/react-native-push-demo.gif)
 
@@ -68,6 +69,10 @@ var {
 ```
   constructor(props) {
     super(props);
+    
+    this.state = {
+       tag: '',
+    }
     this.renderScene = this.renderScene.bind(this);
   }
 ```
@@ -96,6 +101,7 @@ render() {
     }
 ```
 这里仅仅是返回了一个Navigator。React Native使用Navigator来控制页面的跳转。Navigator有3个属性：
+
 - initialRoute 声明了初始要显示的界面，这里是传了一个route name过去即“pushActivity”
 
 - configureScene 指定了页面跳转的动画，查看Navigator.SceneConfigs来获取默认的动画和更多的场景配置选项。
