@@ -154,118 +154,271 @@ React.AppRegistry.registerComponent('PushDemoApp', () => PushDemoApp);
 ```
 
 我们再来看一下push_activity.js这个类，这是应用的启动界面，先来看一下render()方法，render()中return的内容相当于Android中的xml
-布局，React Native使用了css-layout，实现了flexbox，即弹性盒布局。下面我们以push_activity.js中的界面为例一起来学一下这个布局。
-
-> push_activity.js
-```
-render() {
-        return (
-            <ScrollView style = { styles.parent }>
-            
-            <Text style = { styles.textStyle }>
-              { this.state.appkey }
-            </Text>
-            <Text style = { styles.textStyle }>
-              { this.state.imei }
-            </Text>
-            <Text style  = { styles.textStyle }>
-              { this.state.package }
-            </Text>
-            <Text style = { styles.textStyle }>
-              { this.state.deviceId }
-            </Text> 
-            <Text style = { styles.textStyle }>
-              { this.state.version }
-            </Text>
-            <TouchableHighlight
-              underlayColor = '#0866d9'
-              activeOpacity = { 0.5 }
-              style = { styles.btnStyle }
-              onPress = { this.jumpSetActivity }>
-              <Text style = { styles.btnTextStyle }>
-                设置
-              </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor = '#0866d9'
-              activeOpacity = { 0.5 }
-              style = { styles.btnStyle }
-              onPress = { this.onInitPress }>
-                <Text style = { styles.btnTextStyle }>
-                  INITPUSH
-                </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor = '#e4083f'
-              activeOpacity = { 0.5 }
-              style = { styles.btnStyle }
-              onPress = { this.onStopPress }>
-                <Text style = { styles.btnTextStyle }>
-                  STOPPUSH
-                </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor = '#f5a402'
-              activeOpacity = { 0.5 }
-              style = { styles.btnStyle }
-              onPress = { this.onResumePress }>
-                <Text style = { styles.btnTextStyle }> 
-                  RESUMEPUSH
-                </Text>
-            </TouchableHighlight>
-            <Text style = { styles.textStyle }>
-              { this.state.pushMsg }
-            </Text>
-            </ScrollView>
-
-          )
-    }
-    
-  //style:
-var styles = React.StyleSheet.create({
-  parent: {
-    padding: 15,
-    backgroundColor: '#f0f1f3'
-  },
-
-  textStyle: {
-    marginTop: 10,
-    textAlign: 'center',
-    fontSize: 20,
-    color: '#808080'
-  },
-
-  btnStyle: {
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: '#3e83d7',
-    borderRadius: 8,
-    backgroundColor: '#3e83d7'
-  },
-  btnTextStyle: {
-    textAlign: 'center',
-    fontSize: 25,
-    color: '#ffffff'
-  },
-  inputStyle: {
-    borderColor: '#48bbec',
-    borderWidth: 1,
-
-  },
-});
-```
-Flexbox布局默认是线性布局即Android中的LinearLayout，PushActivity最外面由ScrollView包裹，style属性指定了该控件使用了哪种style，
-如果一个控件没有声明高度或宽度，则默认填充满父布局。或者
+布局，React Native使用了css-layout，实现了flexbox，Flexbox布局默认是线性布局即Android中的LinearLayout，PushActivity最外面由ScrollView包裹，style属性指定了该控件使用了哪种style，如果一个控件没有声明高度或宽度，则默认填充满父布局。或者
 ```
 container: {
   flex: 1,
 }
 ```
-flex:1这个也相当于match_parent。
+flex:1这个也相当于match_parent。**需要注意的是，在React Native的样式中中，如果没有声明，数值的默认单位都是dp，而不是px**，下面讲解布局相关的属性。
 
 flexDirection:指定排列方向，有row, column这两个值，分别是水平及垂直排列，默认为垂直排列。
-alignItems与justifyContent这两个属性都指定控件在布局中的对齐方式，在垂直布局中，alignItem决定y轴方向，justifyContent决定x轴
-方向，而在水平布局中则相反。如下图所示：
+
+*alignItems*: 可能的取值: 
+
+- flex-start  控件在x轴的起点对齐；但在水平布局中为在y轴的起点对齐
+- center 控件在x轴的中点对齐；在水平布局中为在y轴的中点对齐
+- flex-end 控件在x轴的终点对齐；但在水平布局中为在y轴的终点对齐
+- stretch 默认值，占满容器的高度；如果为水平方向则占满宽度。
+
+*justifyContent*: 可能的取值: 
+
+- flex-start 在垂直布局中为上对齐（默认值）；在水平布局中为左对齐（默认值）
+- center 居中
+- flex-end 在垂直布局中为下对齐；在水平布局中为右对齐
+- space-between 在垂直布局中以高为基准，控件两端对齐，控件之间的间隔相等；在水平布局中以宽为基准，控件两端对齐，控件之间间隔相等
+- space-around 在垂直布局中以高为基准，控件之间的间隔相等，控件与边界的间隔为控件之间间隔的一半；在水平布局中以宽为基准，控件之间的间隔相等，控件与边界的间隔为控件之间间隔的一半
+
+![如下图所示]()
+
+*alignSelf* 其效果与alignItems一样，但针对个别控件。如果某个控件声明了alignSelf属性，则会覆盖父容器的alignItems属性。
+
+*position* :可能的取值：
+- relative 相对位置（默认值）
+- absolute 绝对位置
+
+这两个属性一般会搭配left，top，right，bottom这4个属性来使用，分别表示控件的左上右下边缘距离y轴或x轴的距离。还有一些属性是与控件相关的：
+
+**背景颜色**
+
+1. backgroundColor //所有涉及颜色的都是字符串类型的rgb格式，如#ffffff
+
+**边框**
+
+1. borderBottomWidth //底部边框宽度
+2. borderLeftWidth  //左边边框宽度
+3. borderRightWidth //右边边框宽度
+4. borderTopWidth //顶部边框宽度
+5. borderWidth  //所有边框宽度
+6. borderTopLeftRadius //左上圆角
+7. borderTopRightRadius //右上圆角
+8. borderBottomLeftRadius //左下圆角
+9. borderBottomRightRadius //右下圆角
+10. borderRadius //圆角
+11. borderBottomColor //底边框颜色
+12. borderLeftColor //左边框颜色
+13. borderRightColor //右边框颜色
+14. borderTopColor //上边框颜色
+15. borderColor //边框颜色
+
+**外边距**
+
+1. marginBottom
+2. marginLeft
+3. marginRight
+4. marginTop
+5. marginVertical
+6. marginHorizontal
+7. margin
+
+**内边距**
+
+paddingBottom  
+paddingLeft  
+paddingRight  
+paddingTop  
+paddingVertical
+paddingHorizontal  
+padding
+
+**宽高**
+
+1. width
+2. height
+
+**字体相关**
+
+1. color 字体颜色
+2. fontFamily 字体族
+3. fontSize 字体大小
+4. fontStyle 字体样式，正常，倾斜等，值为enum('normal', 'italic')
+5. fontWeight 字体粗细，值为enum("normal", 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900')
+6. letterSpacing 字符间隔
+7. lineHeight 行高
+8. textAlign 字体对齐方式，值为enum("auto", 'left', 'right', 'center', 'justify')
+9. textDecorationLine 字体修饰，上划线，下划线，删除线，无修饰，值为enum("none", 'underline', 'line-through', 'underline underline-through')
+10. textDecorationStyle enum("solid", 'double', 'dotted', 'dashed') 修饰的线的类型
+11. textDecorationColor 修饰的线的颜色
+12. writingDirection enum("auto", 'ltr', 'rtl') 字体显示方向
+ 
+**图片相关**
+
+1. resizeMode enum('cover', 'contain', 'stretch') conver是指按照图片实际大小显示，超出部分裁剪，默认值；contain是无论如何都将图片显示在控件中，如果超出则等比例缩小并居中显示；stretch是指将图片进行拉伸，填充满控件
+2. overflow enum('visible', 'hidden') 超出部分是否显示，hidden为隐藏
+3. tintColor 着色，rgb字符串类型
+4. opacity 透明度
+
+在render()中，使用JSX的写法，用一对\<View\>\</View\>标签来包裹一个控件，这相当于Html中的\<div\>\</div\>标签。下面给出一些React Native与Android控件对照：
+
+|**React Native**|**Android**|
+|:---:|:---:|
+|Text|TextView|
+|TouchableHighlight|Button|
+|TextInpt|EditText|
+|image|ImageView|
+|ScrollView|ScrollView|
+|ListView|ListView|
+
+React Native还实现了一些比较常用的控件，如Switch、Picker、ToolbarAndroid、ViewPagerAndroid等。这些控件就不再一一讲解了，有很多文章可以参考，官网也有[demo](https://github.com/facebook/react-native/tree/master/Examples/UIExplorer)
+
+下面来讲解一下JS如何调用Native。如果我们的应用是混合的React Native应用(使用了第三方jar，如本例中的jpush-sdk)，那么在JS中调用sdk中的接口是非常常见而且也是必要的。使用NativeModule就可以达到这种目的。
+
+要声明一个NativeModule，需要以下几个步骤。
+
+- **定义一个NativeModule类，继承自ReactContextBaseJavaModule。**
+
+```
+public class PushHelperModule extends ReactContextBaseJavaModule {
+
+    private static String TAG = "PushHelperModule";
+    private Context mContext;
+
+    public PushHelperModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+    }
+
+    @Override
+    public boolean canOverrideExistingModule() {
+        return true;
+    }
+    
+    @Override
+    public String getName() {
+        return "PushHelper";
+    }
+}
+
+```
+声明一个NativeModule类时，需要重写canOverrideExistingModule()及getName()两个方法，在getName中返回的字符串即为在JS中引用的类，即在JS中使用PushHelper来引用PushHelperModule这个类。现在可以在PushHelperModule中添加ReactMethod了：
+```
+@ReactMethod
+    public void init(Callback successCallback, Callback errorCallback) {
+        try {
+            JPushInterface.init(PushDemoApplication.getContext());
+            successCallback.invoke("init Success!");
+            Log.i("PushSDK", "init Success !");
+        } catch (Exception e) {
+            errorCallback.invoke(e.getMessage());
+        }
+
+    }
+```
+使用@ReactMethod标签来表明这是一个React方法，这样就可以在JS中直接调用，而且这个方法必须为public，返回类型为void。上面的方法还是用了Callback（com.facebook.react.bridge.Callback），CallBack可以用来在Native中回调JS中的方法。结合本例，init方法中调用了JPushInterface.init(context)这个接口，接着执行了callback.invoike()，这个方法就可以回调到JS了.invoke()可以带参数，String或者Map都行。可以有多个Callback，相应地在JS中要带多个参数。
+
+>push_activity.js
+
+```
+  onInitPress() {
+    PushHelper.init( (success) => {
+      ToastAndroid.show(success, ToastAndroid.SHORT);
+    }, (error) => {
+      ToastAndroid.show(error, ToastAndroid.SHORT);
+    });
+  }
+
+```
+在JS中使用() => {}箭头函数就可以接收回调函数了。
+
+- **新建一个类实现ReactPackger，然后在将刚才定义的NativeModule加进来：**
+
+```
+public class CustomReactPackage implements ReactPackage {
+    @Override
+    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+        List<NativeModule> result = new ArrayList<>();
+        result.add(new PushHelperModule(reactContext));
+        result.add(new ToastModule(reactContext));
+        result.add(new JSHelperModule(reactContext));
+        return result;
+    }
+
+    @Override
+    public List<Class<? extends JavaScriptModule>> createJSModules() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+        List<ViewManager> result = new ArrayList<>();
+        result.add(new ReactTextManager());
+        return result;
+    }
+}
+
+```
+在重写的createNativeModules()方法中将PushHeperModule加到List，然后返回这个List就行了。其他的模块如果为空可以返回Collections.emptyList()。
+
+- **在MainActivity中将packger加到ReactInstanceManager的构造方法中**
+
+```
+mReactInstanceManager = ReactInstanceManager.builder()
+                .setApplication((Application) PushDemoApplication.getContext())
+                .setBundleAssetName("index.android.bundle")
+                .setJSMainModuleName("react-native-android/index.android")
+                .addPackage(new MainReactPackage())
+                .addPackage(new CustomReactPackage())
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
+                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .build();
+        mReactRootView.startReactApplication(mReactInstanceManager, "PushDemoApp", null);
+
+```
+
+- **在JS中用NativeModules引用**
+
+```
+var {
+  NativeModules,
+} = React;
+var PushHelper = NativeModules.PushHelper;
+```
+之后就可以使用PushHelper直接调用使用了@ReactMethod标签的方法了。需要注意的是，如果在Native添加了新的类，必须重新编译运行一次App，只是Reload JS是不能刷新的。下面来说一下如何运行。
+
+在init完Project后，就可以直接在命令行中使用
+
+>react-native run-android
+
+命令运行了。这时会自动弹出一个窗口来执行React Packger。
+
+![React Packger]()
+
+如果使用模拟器，推荐使用Genymotion，只要注册一个账号就可以了。运行后如果出现
+
+![错误]()
+
+不要方，点击一下Reload JS即可，如果出现了Unable to download JS bundle错误：
+
+![错误2]()
+
+首先检查一下设备和电脑的网络，确保两者在同一个Wifi环境下。在模拟器上点击下面的三角按钮，在弹出的菜单中点击Menu按钮，如图：
+
+![menu]()
+
+就可以唤出设置对话框：
+
+![dialog]()
+
+在真机中，只需要晃动手机，即可弹出上面的对话框。然后点击Dev Settings选项进入设置界面。
+
+![setting]()
+
+然后点击Debug server host & port for device，在弹出的对话框中，输入电脑连接的IP地址加上8081端口即可，如：
+
+> 192.168.1.1:8081
+
+然后点击OK，返回，重新唤出设置对话框，点击Reload JS选项，这时应该可以正确运行了。
+
+后续会发表ListView的用法以及在React Native中如何使用Redux架构。
 
 
 
