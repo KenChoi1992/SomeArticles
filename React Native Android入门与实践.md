@@ -134,19 +134,19 @@ return <Component
 关于页面的启动模式，即相当于Android中Activity的4种启动模式以及flag的设置，在React Native中则是在跳转时调用Navigator的内部
 方法来控制，如下：
 
-- getCurrentRoutes() - returns the current list of routes
-- jumpBack() - Jump backward without unmounting the current scene
-- jumpForward() - Jump forward to the next scene in the route stack
-- jumpTo(route) - Transition to an existing scene without unmounting
-- push(route) - Navigate forward to a new scene, squashing any scenes that you could jumpForward to
-- pop() - Transition back and unmount the current scene
-- replace(route) - Replace the current scene with a new route
-- replaceAtIndex(route, index) - Replace a scene as specified by an index
-- replacePrevious(route) - Replace the previous scene
-- resetTo(route) - Navigate to a new scene and reset route stack
-- immediatelyResetRouteStack(routeStack) - Reset every scene with an array of routes
-- popToRoute(route) - Pop to a particular scene, as specified by its route. All scenes after it will be unmounted
-- popToTop() - Pop to the first scene in the stack, unmounting every other scene
+- getCurrentRoutes() - returns the current list of routes, 返回当前栈中的所有路由
+- jumpBack() - Jump backward without unmounting the current scene，在保留当前场景的情况下返回到上一个场景
+- jumpForward() - Jump forward to the next scene in the route stack 回到刚才jumpBack()之前的场景
+- jumpTo(route) - Transition to an existing scene without unmounting 跳转到当前栈中的某个场景并且不会卸载掉之前的场景
+- push(route) - Navigate forward to a new scene, squashing any scenes that you could jumpForward to 往栈中push一个新场景
+- pop() - Transition back and unmount the current scene 在栈中卸载掉当前场景，并返回上一个场景
+- replace(route) - Replace the current scene with a new route 用一个新路由替换掉当前场景
+- replaceAtIndex(route, index) - Replace a scene as specified by an index 替换指定索引的路由场景
+- replacePrevious(route) - Replace the previous scene 替换掉上一个场景
+- resetTo(route) - Navigate to a new scene and reset route stack 跳转到一个新场景，并且重置路由栈，相当于Android中的new Task
+- immediatelyResetRouteStack(routeStack) - Reset every scene with an array of routes 用一个新路由栈替换之前的路由栈
+- popToRoute(route) - Pop to a particular scene, as specified by its route. All scenes after it will be unmounted 跳转到指定的场景，在这个场景之上的都会被卸载掉。相当于Android中的CLEAR_TOP标志
+- popToTop() - Pop to the first scene in the stack, unmounting every other scene 跳转到第一个场景，其他的场景将会被卸载
 
 最后调用AppReistry来注册JS入口：
 ```
@@ -179,7 +179,7 @@ flexDirection:指定排列方向，有row, column这两个值，分别是水平�
 - space-between 在垂直布局中以高为基准，控件两端对齐，控件之间的间隔相等；在水平布局中以宽为基准，控件两端对齐，控件之间间隔相等
 - space-around 在垂直布局中以高为基准，控件之间的间隔相等，控件与边界的间隔为控件之间间隔的一半；在水平布局中以宽为基准，控件之间的间隔相等，控件与边界的间隔为控件之间间隔的一半
 
-![如下图所示]()
+![如下图所示](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/ReactNativeFlexBox.png)
 
 *alignSelf* 其效果与alignItems一样，但针对个别控件。如果某个控件声明了alignSelf属性，则会覆盖父容器的alignItems属性。
 
@@ -390,27 +390,27 @@ var PushHelper = NativeModules.PushHelper;
 
 命令运行了。这时会自动弹出一个窗口来执行React Packger。
 
-![React Packger]()
+![React Packger](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/react2.png)
 
 如果使用模拟器，推荐使用Genymotion，只要注册一个账号就可以了。运行后如果出现
 
-![错误]()
+![错误](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/react3.png)
 
 不要方，点击一下Reload JS即可，如果出现了Unable to download JS bundle错误：
 
-![错误2]()
+![错误2](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/react4.png)
 
 首先检查一下设备和电脑的网络，确保两者在同一个Wifi环境下。在模拟器上点击下面的三角按钮，在弹出的菜单中点击Menu按钮，如图：
 
-![menu]()
+![menu](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/react5.png)
 
 就可以唤出设置对话框：
 
-![dialog]()
+![dialog](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/react6.png)
 
 在真机中，只需要晃动手机，即可弹出上面的对话框。然后点击Dev Settings选项进入设置界面。
 
-![setting]()
+![setting](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/react7.png)
 
 然后点击Debug server host & port for device，在弹出的对话框中，输入电脑连接的IP地址加上8081端口即可，如：
 
@@ -418,7 +418,7 @@ var PushHelper = NativeModules.PushHelper;
 
 然后点击OK，返回，重新唤出设置对话框，点击Reload JS选项，这时应该可以正确运行了。
 
-后续会发表ListView的用法以及在React Native中如何使用Redux架构。
+有问题可与我联系QQ: 992649726, 或者发邮件。后续会发表ListView的用法以及在React Native中如何使用Redux架构。
 
 
 
