@@ -209,7 +209,9 @@ flexDirection:指定排列方向，有row, column这两个值，分别是水平�
 - relative 相对位置（默认值）
 - absolute 绝对位置
 
-这两个属性一般会搭配left，top，right，bottom这4个属性来使用，分别表示控件的左上右下边缘距离y轴或x轴的距离。还有一些属性是与控件相关的：
+这两个属性一般会搭配left，top，right，bottom这4个属性来使用，分别表示控件的左上右下边缘距离y轴或x轴的距离。
+
+还有一些属性是与控件相关的：
 
 **背景颜色**
 
