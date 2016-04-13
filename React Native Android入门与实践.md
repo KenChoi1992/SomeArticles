@@ -269,7 +269,7 @@ padding
 |:---:|:---:|
 |Text|TextView|
 |TouchableHighlight|Button|
-|TextInpt|EditText|
+|TextInput|EditText|
 |image|ImageView|
 |ScrollView|ScrollView|
 |ListView|ListView|
