@@ -75,9 +75,26 @@ var {
     this.renderScene = this.renderScene.bind(this);
   }
 ```
-这个构造函数可以用来做一些初始化的动作，使用this.state = {}替代了ES5中getInitialState函数。React Native较为出彩的一点就是
-将所有的组件都看成了状态机，通过设置组件的状态，触发render函数重新渲染，就可以实现刷新界面的效果。使用this.setState方法就
-可以改变状态，后面会讲到这一点。
+这个构造函数可以用来做一些初始化的动作，使用this.state = {}替代了ES5中getInitialState函数。React Native较为出彩的一点就是将所有的组件都看成了状态机，通过设置组件的状态或者属性就可以触发render函数重新渲染，实现刷新界面的效果。
+```
+<Text style = { styles.btnText }
+  { this.state.appKey }
+</Text>
+```
+上面Text相当于Android中的TextView控件，Text控件包裹的内容引用了一个状态：appKey，appKey在构造函数中被初始化为abc，那么这个Text就会显示abc这个字符串。使用this.setState方法就可以改变状态，比如：
+```
+  this.setState({ appKey: '123' });
+```
+这样Text就会刷新，重新显示为123。还可以将状态作为属性传递给其他组件，比如：
+```
+<Actionbar style = { styles.actionbar }>
+    onselect = { this.onSelectMenu }
+    currentPage = { this.state.page }
+</Actionbar>
+```
+上面的代码将this.onSelectMenu以及this.state.page作为属性传递到Actionbar这个组件了，前者是一个函数，后者是一个状态，这样在Actionbar中就可以通过this.props.onselect以及this.props.currentPage来获得这两个属性。当这两个属性变化时，也会触发render函数重新渲染。在Redux架构中，通过改变属性来刷新界面非常常见，后面会讲到这个架构。
+
+接下来是这一句
 >this.renderScene = this.renderScene.bind(this);
 
 在ES5下，React.createClass会把所有的方法都bind一遍，这样可以提交到任意的地方作为回调函数，而this不会变化。但官方现在逐步
