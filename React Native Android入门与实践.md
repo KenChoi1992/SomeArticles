@@ -14,8 +14,10 @@
 
 并且在build.gradle加上相关配置，此处不再赘述，可以参考github上的源码。
 
-React Native应用有Native和JS两个入口：MainActivity以及index.android.js。Android的入口是在MainActivity中实例化
-ReactInstanceManager，并通过ReactRootView启动App。
+##配置入口
+React Native应用有Native和JS两个入口：MainActivity以及index.android.js。
+####Native入口
+Android的入口是在MainActivity中实例化ReactInstanceManager，并通过ReactRootView启动App。
 
 ```
 mReactRootView = new ReactRootView(this);
@@ -30,21 +32,23 @@ mReactRootView = new ReactRootView(this);
     .build();
 mReactRootView.startReactApplication(mReactInstanceManager, "PushDemoApp", null);
 ```
-上面的setBundleAssetName("index.android.bundle")，如果没有生成index.android.bundle文件，可以在app目录下新建一个assets目录，
-然后在命令行中启动packager（使用npm start命令即可），启动后再输入以下命令生成bundle文件：
+上面的setBundleAssetName("index.android.bundle")，如果没有生成index.android.bundle文件，可以在app目录下新建一个assets文件夹，然后在命令行中启动packager（使用npm start命令即可），启动后再输入以下命令生成bundle文件：
 ```
-curl "http://localhost:8081/index.android.bundle?platform=android" -o "android/app/src/main/assets/index.android.bundle"
+curl "http://localhost:8081/index.android.bundle?platform=android" -o "android/app/assets/index.android.bundle"
 ```
+上面-o后面的路径即为存放index.android.bundle的路径，当然你也可以修改这个路径。
+
 setJSMainModuleName("")这一句里面的参数则是index.android.js所在的文件路径，这个路径是相对于package.json的路径，在本例中则
 把index.android.js放在了react-native-android目录下。
 
-注意mReactRootView.startReactApplication()这个方法中的第二个参数，这个参数在JS的入口处注册App的时候调用到，即为
-index.android.js如下方法中的第一个参数：
+####JS入口
+打开index.android.js文件（推荐使用Sublime Text开发JS，有丰富的插件支持），可以看到最下面调用了AppReistry来注册JS入口：
 ```
 React.AppRegistry.registerComponent("PushDemoApp", () => PushDemoApp);
 ```
-接下来我们打开index.android.js文件（推荐使用Sublime Text开发JS，有丰富的插件支持）。
-首先看到第一句： ‘use strict’;放在第一行表明整个脚本都使用了JS的严格模式，只需要记住开发的时候一般都使用严格模式就行了。
+要注意上面函数的第一个参数即为在MainActivity中mReactRootView.startReactApplication()方法中的第二个参数。
+##编写JS
+配置好入口后，接下来我们就可以开始编写JS了。我们从index.android.js文件开始讲解相关语法以及布局。首先看到第一句： ‘use strict’;放在第一行表明整个脚本都使用了JS的严格模式，只需要记住开发的时候一般都使用严格模式就行了。
 ```
 import React from 'react-native';
 import PushActivity from './push_activity';
@@ -116,7 +120,9 @@ render() {
         );
     }
 ```
-这里仅仅是返回了一个Navigator。React Native使用Navigator来控制页面的跳转。Navigator有3个属性：
+可以看到这里仅仅是返回了一个Navigator。
+####Navigator
+React Native使用Navigator来控制页面的跳转。Navigator有3个属性：
 
 - initialRoute 声明了初始要显示的界面，这里是传了一个route name过去即“pushActivity”
 
@@ -170,17 +176,17 @@ return <Component
 - popToRoute(route) - Pop to a particular scene, as specified by its route. All scenes after it will be unmounted 跳转到指定的场景，在这个场景之上的都会被卸载掉。相当于Android中的CLEAR_TOP标志
 - popToTop() - Pop to the first scene in the stack, unmounting every other scene 跳转到第一个场景，其他的场景将会被卸载
 
-最后调用AppReistry来注册JS入口：
-```
-React.AppRegistry.registerComponent('PushDemoApp', () => PushDemoApp);
-```
+####布局
 
 我们再来看一下push_activity.js这个类，这是应用的启动界面，先来看一下render()方法，render()中return的内容相当于Android中的xml
-布局，React Native使用了css-layout，实现了flexbox，Flexbox布局默认是线性布局即Android中的LinearLayout，PushActivity最外面由ScrollView包裹，style属性指定了该控件使用了哪种style，如果一个控件没有声明高度或宽度，则默认填充满父布局。或者
+布局，React Native使用了css-layout，实现了flexbox，Flexbox布局默认是线性布局即Android中的LinearLayout，PushActivity最外面由ScrollView包裹，style属性指定了该控件使用了哪种style，如果一个控件没有声明高度或宽度，则默认填充满父布局。使用StyleSheet.create来定义样式，可以看到样式定义所用的语法是JSON格式的：
 ```
-container: {
-  flex: 1,
-}
+var styles = React.StyleSheet.create({
+  container: {  
+    flex: 1,
+  },
+});
+
 ```
 flex:1这个也相当于match_parent。**需要注意的是，在React Native的样式中中，如果没有声明，数值的默认单位都是dp，而不是px**，下面讲解布局相关的属性。
 
@@ -295,6 +301,7 @@ padding
 
 React Native还实现了一些比较常用的控件，如Switch、Picker、ToolbarAndroid、ViewPagerAndroid等。这些控件就不再一一讲解了，有很多文章可以参考，官网也有[demo](https://github.com/facebook/react-native/tree/master/Examples/UIExplorer)
 
+##JS调用Native
 下面来讲解一下JS如何调用Native。如果我们的应用是混合的React Native应用(使用了第三方jar，如本例中的jpush-sdk)，那么在JS中调用sdk中的接口是非常常见而且也是必要的。使用NativeModule就可以达到这种目的。
 
 要声明一个NativeModule，需要以下几个步骤。
@@ -406,7 +413,35 @@ var {
 } = React;
 var PushHelper = NativeModules.PushHelper;
 ```
-之后就可以使用PushHelper直接调用使用了@ReactMethod标签的方法了。需要注意的是，如果在Native添加了新的类，必须重新编译运行一次App，只是Reload JS是不能刷新的。下面来说一下如何运行。
+之后就可以使用PushHelper直接调用使用了@ReactMethod标签的方法了。需要注意的是，如果在Native添加了新的类，必须重新编译运行一次App，只是Reload JS是不能刷新的。
+
+##Native调用JS
+在Native中调用JS，最简单的方法是使用RCTDeviceEventEmitter。
+打开MainActivity，在MessageReceiver的onReceive()中可以看到这段代码：
+```
+Assertions.assertNotNull(mReactInstanceManager.getCurrentReactContext())        
+  .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)        
+  .emit("receivePushMsg", messge);
+```
+通过getCurrentReactContext.getJSModule()方法找到RCTDeviceEventEmitter这个模块，然后调用emit方法调用JS中的方法，emit()方法的第一个参数即为在JS中定义的接收事件名，第二个参数可以传递一个对象到JS中。接下来在JS中接收这个事件：
+>push_activity.js
+
+```
+componentWillMount() {
+  DeviceEventEmitter.addListener('receivePushMsg', (data) => {
+        this.setState({ pushMsg: data });
+      });
+}
+```
+在组件注册的生命周期函数中使用DeviceEventEmitter.addListener()来接收RCTDeviceEventEmitter的emit事件即可。然后在组件卸载的生命周期函数中移除Listener：
+```
+componentWillUnmount() {
+      DeviceEventEmitter.removeAllListeners();
+}
+```
+
+##运行
+下面来说一下如何运行。
 
 在init完Project后，就可以直接在命令行中使用
 
