@@ -12,7 +12,7 @@
 
 ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/QQ%CD%BC%C6%AC20160504112620.png)
 
-- 修改AndroidManifest，将“您的报名”和AppKey替换成自己在极光推送控制台上注册的包名和AppKey；如果是从github上下载的压缩包，则只需要将package以及${applicationId}替换成上述在极光控制台上注册的包名即可。
+- 修改AndroidManifest，将“您的报名”和AppKey替换成自己在极光推送控制台上注册的包名和AppKey；如果是从github上下载的压缩包，则只需要将package以及${applicationId}替换成上述在极光控制台上注册的包名即可（如果没有可以[前往注册](https://www.jpush.cn/)）。
 ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/QQ%CD%BC%C6%AC20160504112150.png)
 
 - 全局替换R引用：选中该项目按Ctrl + H（全局搜索） , 在弹出的对话框中选择File Search-->在Containing text中填写：
