@@ -17,13 +17,18 @@
 ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/QQ%CD%BC%C6%AC20160504112150.png)
 
 - 全局替换R引用：选中该项目按Ctrl + H（全局搜索） , 在弹出的对话框中选择File Search-->在Containing text中填写：
-import io.jchat.android.R; （别忘了分号）然后点击Replace在弹出的对话框中，全局替换：import io.jchat.android.R;替换为import 您的包名.R;
+import io.jchat.android.R; （别忘了分号）然后点击Replace
+![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/replace.png)
+
+在弹出的对话框中，全局替换：import io.jchat.android.R;替换为import 您的包名.R;
+![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/replace2.png)
+
 - 增加support包依赖，有以下三个步骤：
  1. 下载Support Library；可以通过打开SDK Manager下载extra包来更新：
  ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/QQ%CD%BC%C6%AC20160504112751.png) 
 
  2. import刚才你下载的support-v7-appcompat项目(选择../sdk/extras/android/support/v7/appcompat)：
- ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/import3.PNG)
+ ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/import4.PNG)
 
  如果这一步出现了错误：
  ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/cuowu1.PNG)
