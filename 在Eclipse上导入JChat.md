@@ -33,7 +33,8 @@ import io.jchat.android.R; （别忘了分号）然后点击Replace
  如果这一步出现了错误：
  ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/cuowu1.PNG)
  
- 则可以将support-v7-appcompat下的project.properties改为23（依据上一步中下载的support版本）
+ 则可以将support-v7-appcompat下的project.properties中的target改为23（依据上一步中下载的support版本），JChat中的target也改为23
+ 
  ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/project.properties.PNG)
  
  3. 在JChat中添加support-v7-appcompat依赖，右键点击JChat项目->选择properties
