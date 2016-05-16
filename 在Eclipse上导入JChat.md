@@ -1,7 +1,7 @@
 ##在Eclipse上导入JChat
 
 - 在官网或者在github下载zip后，解压；
-- 在Eclipse中选择File-> Import -> Existing Android Project，然后点击next
+- Import JChat：在Eclipse中选择File-> Import -> Existing Android Project，然后点击next
 
 ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/import.PNG)
 
@@ -27,7 +27,7 @@ import io.jchat.android.R; （别忘了分号）然后点击Replace
  1. 下载Support Library；可以通过打开SDK Manager下载extra包来更新：
  ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/QQ%CD%BC%C6%AC20160504112751.png) 
 
- 2. import刚才你下载的support-v7-appcompat项目(选择../sdk/extras/android/support/v7/appcompat)：
+ 2. Import刚才你下载的support-v7-appcompat项目(选择../sdk/extras/android/support/v7/appcompat)：
  ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/import4.PNG)
 
  如果这一步出现了错误：
