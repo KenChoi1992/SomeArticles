@@ -1,10 +1,10 @@
-####在你的项目集中集成jmessage-sdk
+####在你的项目集中集成 jmessage-sdk
 
 * 类库配置
 
-在下载的JChat demo中打开libs文件夹，将libs的so库文件以及jmessage－sdk拷贝到你的项目中，目录结构![如图](https://github.com/KenChoi1992/jchat-android/raw/dev/JChat/screenshots/screenshot1.png)
+在下载的 JChat demo 中打开 libs 文件夹，将 libs 的 so 库文件以及 jmessage-sdk 拷贝到你的项目中，目录结构![如图](https://github.com/KenChoi1992/jchat-android/raw/dev/JChat/screenshots/screenshot1.png)
 
-接下来，修改你项目中的build.gradle文件，在android块中加入sourceSets
+接下来，修改你项目中的 build.gradle 文件，在 android 块中加入 sourceSets
 > demo build.gradle
 
 ```
@@ -33,11 +33,11 @@
         release.setRoot('build-types/release')
     }
 ```
-这样可以兼容Android Studio和Eclipse。
+这样可以兼容 Android Studio 和 Eclipse。
 
-* AndroidManifest配置
+* AndroidManifest 配置
 
-在demo中将jmessage－sdk以及jpush需求的配置项复制过来（jmessage集成了jpush的功能）
+在 demo 中将 jmessage-sdk 以及 jpush 需求的配置项复制过来（jmessage 集成了 jpush 的功能）
 
 权限声明
 > demo AndroidManifest.xml
@@ -73,7 +73,7 @@
 
 ```
 
-application配置项
+application 配置项
 > demo AndroidManifest.xml
 
 ```
@@ -172,9 +172,9 @@ application配置项
 
 ```
 
-* 初始化jmessage－sdk
+* 初始化 jmessage-sdk
 
-在你的application类中，需要调用以下方法以初始化jmessage－sdk
+在你的 application 类中，需要调用以下方法以初始化 jmessage-sdk
 > demo JChatApplication.java
 
 ```
@@ -183,11 +183,9 @@ application配置项
   JMessageClient.setNotificationMode(JMessageClient.NOTI_MODE_DEFAULT);
   new NotificationClickEventReceiver(getApplicationContext());
 ```
-如果你想自定义Notification的样式，可以将上面的NotificationMode的值设为No_Notification，并且去掉下面的
+如果你想自定义 Notification 的样式，可以将上面的 NotificationMode 的值设为 No_Notification，并且去掉下面的 NotificationClickEventReceiver，然后在接收到消息时再创建 Notification（下面会说到）。
 
-NotificationClickEventReceiver，然后在接收到消息时再创建Notification（下面会说到）。
-
-在你的启动Activity的onPause()和onResume()方法中需要分别调用
+在你的启动 Activity 的 onPause()和 onResume()方法中需要分别调用
 
 ```
 JPushInterface.onPause(this);
