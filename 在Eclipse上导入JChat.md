@@ -1,6 +1,8 @@
 ##在 Eclipse 上导入 JChat
 
-- 在官网或者在 github 下载 zip 后，解压；
+##注意新版本用了 ActiveAndroid，需要手动导入 ActiveAndroid 的 jar（Android Studio 则不需要），[下载传送门](https://github.com/pardom/ActiveAndroid/downloads)
+
+- 在官网或者在 github 下载 zip 后，解压(或者 git clone)；
 - Import JChat：在 Eclipse 中选择 File -> Import -> Existing Android Project，然后点击 next
 
 ![](https://github.com/KenChoi1992/SomeArticles/blob/master/screenshots/import.PNG)
